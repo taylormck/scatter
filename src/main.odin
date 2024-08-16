@@ -18,10 +18,10 @@ min_distance_squared :: minimum_distance * minimum_distance
 epsilon :: 0.0001
 num_placement_tries :: 1000
 
-cell_size : i32
-n_cells_width : i32
-n_cells_height : i32
-total_cells : i32
+cell_size: i32
+n_cells_width: i32
+n_cells_height: i32
+total_cells: i32
 
 Vector2 :: struct {
     x, y: i32,
@@ -30,7 +30,7 @@ Vector2 :: struct {
 circle_positions: [dynamic]Vector2
 
 main :: proc() {
-    rl.InitWindow(screen_width, screen_height, "Breaker")
+    rl.InitWindow(screen_width, screen_height, "Scatter Points")
     defer rl.CloseWindow()
 
     cell_size = i32(math.floor(minimum_distance / math.SQRT_TWO))
@@ -100,17 +100,17 @@ insert_point :: proc(grid: ^[dynamic]Vector2, point: Vector2) {
     x_index := point.x / cell_size
     y_index := point.y / cell_size
 
-    grid^[x_index * n_cells_height+ y_index] = point
+    grid^[x_index * n_cells_height + y_index] = point
 }
 
 pick_new_point :: proc(point: Vector2) -> Vector2 {
     theta := rand.float32() * math.TAU
-    
+
     // This algorithm is technically the correct way to pick a random point
     // from an annulus. However, it's computationally expensive also won't
     // pack as many points into the same area.
     // radius := rand.float32() * math.SQRT_TWO * minimum_distance + minimum_distance
-    
+
     // This method is a bit cheaper and faster, and you'd be hard pressed
     // to tell the difference in the results.
     radius := minimum_distance + epsilon
@@ -145,7 +145,7 @@ is_valid_point :: proc(point: Vector2, grid: [dynamic]Vector2) -> bool {
 
     for x in x_min ..= x_max {
         for y in y_min ..= y_max {
-            grid_point := grid[x * n_cells_height+ y]
+            grid_point := grid[x * n_cells_height + y]
 
             if grid_point.x == 0 && grid_point.y == 0 {
                 continue
