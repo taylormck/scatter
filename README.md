@@ -10,7 +10,7 @@ but cuts a few corners for better performance.
 
 ## Running Locally
 
-You'll need the [Odin compile](https://odin-lang.org/docs/install/) installed.
+You'll need the [Odin compiler](https://odin-lang.org/docs/install/) installed.
 
 Then just run `odin run src` in the root directory.
 
