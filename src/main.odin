@@ -105,8 +105,20 @@ insert_point :: proc(grid: ^[dynamic]Vector2, point: Vector2) {
 
 pick_new_point :: proc(point: Vector2) -> Vector2 {
     theta := rand.float32() * math.TAU
+    
+    // This algorithm is technically the correct way to pick a random point
+    // from an annulus. However, it's computationally expensive also won't
+    // pack as many points into the same area.
+    // radius := rand.float32() * math.SQRT_TWO * minimum_distance + minimum_distance
+    
+    // This method is a bit cheaper and faster, and you'd be hard pressed
+    // to tell the difference in the results.
     radius := minimum_distance + epsilon
 
+    // TODO: to make this even faster, we could precompute a bunch
+    // of offsets ahead of time, then reuse the offsets instead
+    // of rolling a random angle and doing all of this expensive trigonometry
+    // for every point we try.
     return Vector2 {
         i32(f32(point.x) + radius * math.cos(theta)),
         i32(f32(point.y) + radius * math.sin(theta)),
