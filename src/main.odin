@@ -42,6 +42,11 @@ main :: proc() {
     defer thread.destroy(drawing_thread)
 
     for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.ENTER) || rl.IsKeyPressed(.SPACE) {
+            thread.destroy(drawing_thread)
+            clear(&circle_positions)
+            drawing_thread = thread.create_and_start(generate_circle_positions)
+        }
 
         rl.BeginDrawing()
 
