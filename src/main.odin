@@ -120,10 +120,6 @@ pick_new_point :: proc(point: Vector2) -> Vector2 {
     // to tell the difference in the results.
     radius := minimum_distance + epsilon
 
-    // TODO: to make this even faster, we could precompute a bunch
-    // of offsets ahead of time, then reuse the offsets instead
-    // of rolling a random angle and doing all of this expensive trigonometry
-    // for every point we try.
     return Vector2 {
         i32(f32(point.x) + radius * math.cos(theta)),
         i32(f32(point.y) + radius * math.sin(theta)),
@@ -139,6 +135,7 @@ is_valid_point :: proc(point: Vector2, grid: [dynamic]Vector2) -> bool {
         return false
     }
 
+    // Get our current cell
     x_index := point.x / cell_size
     y_index := point.y / cell_size
 
