@@ -5,6 +5,7 @@ import "core:fmt"
 import "core:math"
 import "core:math/rand"
 import "core:thread"
+import "core:time"
 import rl "vendor:raylib"
 
 screen_width :: 1280
@@ -79,14 +80,11 @@ generate_circle_positions :: proc() {
 
     append(&circle_positions, initial_circle_position)
 
-    unprocessed_circles: queue.Queue(Vector2)
-    queue.init(&unprocessed_circles)
-    queue.push_back(&unprocessed_circles, initial_circle_position)
-
+    current_point_index := 0
     current_point: Vector2
 
-    for queue.len(unprocessed_circles) > 0 {
-        current_point = queue.pop_front(&unprocessed_circles)
+    for current_point_index < len(&circle_positions) {
+        current_point = circle_positions[current_point_index]
 
         for i in 0 ..< num_placement_tries {
             new_point := pick_new_point(current_point)
@@ -94,11 +92,11 @@ generate_circle_positions :: proc() {
             if is_valid_point(new_point, grid) {
                 append(&circle_positions, new_point)
                 insert_point(&grid, new_point)
-                queue.push_back(&unprocessed_circles, new_point)
             }
         }
-    }
 
+        current_point_index += 1
+    }
 }
 
 insert_point :: proc(grid: ^[dynamic]Vector2, point: Vector2) {
